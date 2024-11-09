@@ -1,0 +1,82 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define ROWS 5
+#define COLS 5
+
+void displayMovies();
+void displaySeats(int seats[ROWS][COLS]);
+void bookSeat(int seats[ROWS][COLS]);
+int checkAvailability(int seats[ROWS][COLS], int row, int col);
+
+int main() {
+    int seats[ROWS][COLS] = {0}; // 0 means available, 1 means booked
+    int choice;
+
+    while (1) {
+        printf("\n--- Cinema Conductor ---\n");
+        printf("1. Display Movies\n");
+        printf("2. Display Seats\n");
+        printf("3. Book a Seat\n");
+        printf("4. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                displayMovies();
+                break;
+            case 2:
+                displaySeats(seats);
+                break;
+            case 3:
+                bookSeat(seats);
+                break;
+            case 4:
+                printf("Exiting...\n");
+                return 0;
+            default:
+                printf("Invalid choice! Please try again.\n");
+        }
+    }
+    return 0;
+}
+
+void displayMovies() {
+    printf("\n--- Available Movies ---\n");
+    printf("1. Movie A\n");
+    printf("2. Movie B\n");
+    printf("3. Movie C\n");
+}
+
+void displaySeats(int seats[ROWS][COLS]) {
+    printf("\n--- Seat Arrangement (0 = Available, 1 = Booked) ---\n");
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COLS; j++) {
+            printf("%d ", seats[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+void bookSeat(int seats[ROWS][COLS]) {
+    int row, col;
+    printf("\nEnter row number (1 to %d): ", ROWS);
+    scanf("%d", &row);
+    printf("Enter column number (1 to %d): ", COLS);
+    scanf("%d", &col);
+
+    if (row < 1 || row > ROWS || col < 1 || col > COLS) {
+        printf("Invalid seat location. Please try again.\n");
+    } else if (checkAvailability(seats, row - 1, col - 1)) {
+        seats[row - 1][col - 1] = 1;
+        printf("Seat successfully booked!\n");
+    } else {
+        printf("Sorry, the seat is already booked.\n");
+    }
+}
+
+int checkAvailability(int seats[ROWS][COLS], int row, int col) {
+    return seats[row][col] == 0;
+}
